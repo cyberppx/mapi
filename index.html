@@ -19,6 +19,7 @@
             background-color: #f0f2f5;
             color: #333;
             line-height: 1.6;
+            padding-top: 10px;
         }
         
         .container {
@@ -27,90 +28,22 @@
             padding: 0 15px;
         }
         
-        header {
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-        }
-        
-        h1 i {
-            color: #ff6b6b;
-            margin-right: 10px;
-        }
-        
-        .date-display {
-            font-size: 18px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        
-        .controls {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .btn {
-            background-color: #4a69bd;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        .date-info {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #1e3c72;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            background-color: #3c5aa8;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-refresh {
-            background-color: #38ada9;
-        }
-        
-        .btn-refresh:hover {
-            background-color: #2e8c8a;
-        }
-        
-        .btn-date {
-            background-color: #6c5ce7;
-        }
-        
-        .btn-date:hover {
-            background-color: #5b4fcf;
-        }
-        
-        .btn-toggle {
-            background-color: #e55039;
-        }
-        
-        .btn-toggle:hover {
-            background-color: #cf3a24;
+            background-color: rgba(30, 60, 114, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-left: 10px;
         }
         
         .content {
             display: flex;
             flex-wrap: wrap;
-            margin-top: 20px;
             gap: 20px;
         }
         
@@ -272,18 +205,6 @@
             color: #ddd;
         }
         
-        .date-picker {
-            margin-bottom: 20px;
-        }
-        
-        .date-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -302,6 +223,18 @@
             text-decoration: underline;
         }
         
+        .auto-update-info {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .auto-update-info i {
+            color: #4a69bd;
+            margin-right: 5px;
+        }
+        
         @media (max-width: 992px) {
             .content {
                 flex-direction: column;
@@ -315,51 +248,14 @@
                 min-height: 500px;
             }
         }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .controls {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div>
-                    <h1><i class="fas fa-earth-americas"></i> Günlük Depremler Haritası</h1>
-                    <div class="date-display" id="currentDate">Bugün: <span id="todayDate"></span></div>
-                </div>
-                <div class="controls">
-                    <button id="refreshBtn" class="btn btn-refresh">
-                        <i class="fas fa-sync-alt"></i> Yenile
-                    </button>
-                    <button id="dateBtn" class="btn btn-date">
-                        <i class="fas fa-calendar-day"></i> Tarih Seç
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-    
     <main class="container">
+        <div class="auto-update-info">
+            <i class="fas fa-sync-alt"></i> Harita otomatik olarak 3-14 saniye aralıklarla güncelleniyor
+        </div>
+        
         <div class="content">
             <div id="map"></div>
             
@@ -369,10 +265,6 @@
                     <div class="api-option active" data-api="all">Tümü</div>
                     <div class="api-option" data-api="usgs">USGS</div>
                     <div class="api-option" data-api="emsc">EMSC</div>
-                </div>
-                
-                <div class="date-picker" style="display: none;" id="datePickerContainer">
-                    <input type="date" id="datePicker" class="date-input" max="">
                 </div>
                 
                 <div class="stats">
@@ -388,6 +280,10 @@
                         <div class="stat-value" id="avgDepth">0</div>
                         <div class="stat-label">Ort. Derinlik</div>
                     </div>
+                </div>
+                
+                <div class="date-info" id="currentDate">
+                    <i class="fas fa-calendar-day"></i> Bugün: <span id="todayDate"></span>
                 </div>
                 
                 <div class="legend">
@@ -423,7 +319,7 @@
         <p>Bu uygulama <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a>, 
         <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank">USGS Deprem API</a> ve 
         <a href="https://www.seismicportal.eu/fdsnws/event/1/" target="_blank">EMSC Deprem API</a> kullanılarak geliştirilmiştir.</p>
-        <p>Veriler sadece seçilen güne ait depremleri göstermektedir.</p>
+        <p>Veriler sadece bugüne ait depremleri göstermektedir.</p>
     </footer>
 
     <script>
@@ -444,11 +340,7 @@
         // Tarih gösterimini güncelle
         document.getElementById('todayDate').textContent = todayDisplay;
         
-        // Tarih seçici için maksimum tarihi bugün olarak ayarla
-        document.getElementById('datePicker').max = todayFormatted;
-        document.getElementById('datePicker').value = todayFormatted;
-        
-        // Seçili tarih (varsayılan: bugün)
+        // Seçili tarih (her zaman bugün)
         let selectedDate = todayFormatted;
         let selectedDateDisplay = todayDisplay;
         
@@ -462,6 +354,9 @@
         let maxMagnitude = 0;
         let totalDepth = 0;
         let earthquakeCount = 0;
+        
+        // Otomatik güncelleme zamanlayıcısı
+        let autoUpdateTimer;
         
         // Tarihi API formatına çevir (YYYY-MM-DD)
         function formatDateForAPI(date) {
@@ -716,6 +611,14 @@
         
         // Tüm marker'ları güncelle
         async function updateMarkers() {
+            // Bugünün tarihini güncelle
+            const today = new Date();
+            selectedDate = formatDateForAPI(today);
+            selectedDateDisplay = formatDateForDisplay(today);
+            
+            // Tarih gösterimini güncelle
+            document.getElementById('todayDate').textContent = selectedDateDisplay;
+            
             const earthquakeList = document.getElementById('earthquakeList');
             earthquakeList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Günlük deprem verileri yükleniyor...</p></div>';
             
@@ -777,8 +680,7 @@
             // Başlık güncelle
             document.querySelector('.earthquake-list h2').innerHTML = `<i class="fas fa-list"></i> ${selectedDateDisplay} Depremleri (${allData.length})`;
             
-            // Tarih gösterimini güncelle
-            document.getElementById('currentDate').innerHTML = `Seçilen Tarih: <span id="todayDate">${selectedDateDisplay}</span>`;
+            console.log(`Harita güncellendi: ${new Date().toLocaleTimeString()}`);
         }
         
         // Marker görünürlüğünü güncelle
@@ -800,48 +702,117 @@
             });
         }
         
+        // Rastgele süre oluştur (3-14 saniye arası)
+        function getRandomInterval() {
+            return Math.floor(Math.random() * (14000 - 3000 + 1)) + 3000;
+        }
+        
+        // Otomatik güncellemeyi başlat
+        function startAutoUpdate() {
+            // Önce temizle
+            if (autoUpdateTimer) {
+                clearTimeout(autoUpdateTimer);
+            }
+            
+            // İlk güncelleme
+            updateMarkers();
+            
+            // Sonraki güncellemeyi planla
+            function scheduleNextUpdate() {
+                const interval = getRandomInterval();
+                console.log(`Sonraki güncelleme ${interval/1000} saniye sonra`);
+                
+                autoUpdateTimer = setTimeout(() => {
+                    updateMarkers();
+                    scheduleNextUpdate();
+                }, interval);
+            }
+            
+            scheduleNextUpdate();
+        }
+        
         // API seçici işlevselliği
         document.querySelectorAll('.api-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.api-option').forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
                 activeApi = this.getAttribute('data-api');
-                updateMarkers();
+                updateMarkerVisibility();
+                
+                // Liste içeriğini yeniden oluştur
+                updateListFromMarkers();
             });
         });
         
-        // Yenile butonu
-        document.getElementById('refreshBtn').addEventListener('click', updateMarkers);
-        
-        // Tarih seç butonu
-        document.getElementById('dateBtn').addEventListener('click', function() {
-            const datePickerContainer = document.getElementById('datePickerContainer');
-            const isVisible = datePickerContainer.style.display === 'block';
-            datePickerContainer.style.display = isVisible ? 'none' : 'block';
+        // Mevcut marker'lardan liste oluştur
+        function updateListFromMarkers() {
+            const allMarkers = [...usgsMarkers, ...emscMarkers];
+            const filteredMarkers = allMarkers.filter(marker => {
+                if (activeApi === 'all') return true;
+                if (activeApi === 'usgs') return usgsMarkers.includes(marker);
+                if (activeApi === 'emsc') return emscMarkers.includes(marker);
+                return false;
+            });
             
-            if (!isVisible) {
-                document.getElementById('datePicker').focus();
+            if (filteredMarkers.length === 0) {
+                document.getElementById('earthquakeList').innerHTML = `
+                    <div class="no-data">
+                        <i class="fas fa-earth-europe"></i>
+                        <h3>Deprem Verisi Yok</h3>
+                        <p>${selectedDateDisplay} tarihi için deprem verisi bulunamadı.</p>
+                    </div>
+                `;
+                return;
             }
-        });
+            
+            // Marker verilerini topla ve sırala
+            const markerData = filteredMarkers.map(marker => {
+                const popupContent = marker.getPopup().getContent();
+                // Basit parsing (gerçek uygulamada daha karmaşık olabilir)
+                const magMatch = popupContent.match(/Büyüklük:<\/strong> ([\d.]+)/);
+                const placeMatch = popupContent.match(/Yer:<\/strong> ([^<]+)/);
+                const timeMatch = popupContent.match(/Zaman:<\/strong> ([^<]+)/);
+                const depthMatch = popupContent.match(/Derinlik:<\/strong> ([\d.]+)/);
+                const sourceMatch = popupContent.match(/Kaynak:<\/strong> ([^<]+)/);
+                
+                return {
+                    lat: marker.getLatLng().lat,
+                    lng: marker.getLatLng().lng,
+                    mag: magMatch ? parseFloat(magMatch[1]) : 0,
+                    place: placeMatch ? placeMatch[1].trim() : 'Bilinmeyen',
+                    time: timeMatch ? timeMatch[1].trim() : '',
+                    depth: depthMatch ? parseFloat(depthMatch[1]) : 0,
+                    source: sourceMatch ? sourceMatch[1].trim() : 'Bilinmeyen'
+                };
+            });
+            
+            // Büyüklüğe göre sırala
+            markerData.sort((a, b) => b.mag - a.mag);
+            
+            // Listeyi oluştur
+            let listHTML = '';
+            markerData.forEach(quake => {
+                listHTML += `
+                    <div class="earthquake-item" data-lat="${quake.lat}" data-lng="${quake.lng}">
+                        <div style="display:flex; align-items:center;">
+                            <div class="earthquake-magnitude" style="background-color:${getColor(quake.mag)}">${quake.mag.toFixed(1)}</div>
+                            <div class="earthquake-info">
+                                <h4>${quake.place}</h4>
+                                <p><i class="far fa-clock"></i> ${quake.time}</p>
+                                <p><i class="fas fa-database"></i> ${quake.source} | <i class="fas fa-ruler-vertical"></i> ${quake.depth ? quake.depth.toFixed(1) + ' km' : 'Bilinmiyor'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('earthquakeList').innerHTML = listHTML;
+            document.querySelector('.earthquake-list h2').innerHTML = `<i class="fas fa-list"></i> ${selectedDateDisplay} Depremleri (${markerData.length})`;
+            attachListEvents();
+        }
         
-        // Tarih seçici değiştiğinde
-        document.getElementById('datePicker').addEventListener('change', function() {
-            selectedDate = this.value;
-            
-            // Seçilen tarihi görüntüleme formatına çevir
-            const dateParts = selectedDate.split('-');
-            const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-            selectedDateDisplay = formatDateForDisplay(dateObj);
-            
-            // Tarih seçiciyi gizle
-            document.getElementById('datePickerContainer').style.display = 'none';
-            
-            // Verileri güncelle
-            updateMarkers();
-        });
-        
-        // Sayfa yüklendiğinde verileri çek
-        document.addEventListener('DOMContentLoaded', updateMarkers);
+        // Sayfa yüklendiğinde verileri çek ve otomatik güncellemeyi başlat
+        document.addEventListener('DOMContentLoaded', startAutoUpdate);
     </script>
 </body>
 </html>
