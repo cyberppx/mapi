@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Günlük Deprem Haritası (EMSC & USGS)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/SVRKdeZPd+4KmNOsCSs="
+        crossorigin=""/>
+    <style>
+        /* Harita div'i için stil */
+        #map { 
+            height: 100vh; 
+            width: 100vw; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20n6a9x6O9I6W5Y6Y7Z3qB+A3yP1N5w7v/r/F4P4h4U="
+        crossorigin=""></script>
+    
+    <script>
+        // 1. Yardımcı Fonksiyonlar: Tarih Formatlama
+        // API'ler ISO 8601 formatında tarih bekler (YYYY-MM-DDTHH:MM:SSZ)
+
+        function getISOString(date) {
+            // ISO dizesini al, sondaki '.000Z' kısmını kes.
+            // Bu format hem USGS hem de EMSC için uygundur.
+            return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+        }
+
+        // Güncel zaman
+        const endTime = new Date(); 
+        
+        // 24 saat önceki zaman (Sadece bugünkü veriler için)
+        const startTime = new Date();
+        startTime.setDate(endTime.getDate() - 1); // 24 saat önceki zaman damgası
+
+        const startTimeISO = getISOString(startTime);
+        const endTimeISO = getISOString(endTime);
+
+        console.log(`Veri Çekme Aralığı: ${startTimeISO} ile ${endTimeISO} arası`);
+
+        // 2. Haritayı Başlatma
+        var map = L.map('map').setView([39.9334, 32.8597], 5); 
+
+        // OpenStreetMap Katmanını Ekleme
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var markers = L.layerGroup().addTo(map);
+
+        // 3. Deprem Verilerini İşleme Fonksiyonu (Aynı kaldı)
+        function processEarthquakeData(features, source) {
+            features.forEach(feature => {
+                var coords = feature.geometry.coordinates;
+                var properties = feature.properties;
+                
+                var lat = coords[1];
+                var lon = coords[0];
+                var magnitude;
+                var time;
+                var title;
+
+                if (source === 'USGS') {
+                    magnitude = properties.mag;
+                    time = new Date(properties.time).toLocaleString(); // UNIX zaman damgası (ms)
+                    title = properties.title;
+                } else if (source === 'EMSC') {
+                    magnitude = properties.mag;
+                    // EMSC, genellikle zamanı saniye cinsinden verir, bu yüzden * 1000 yapılır.
+                    // Ancak kullanılan GeoJSON formatında zaman bazen ms olarak da gelebilir.
+                    // Güvenli olması için, değerin büyüklüğüne bakılarak karar verilebilir, ama burada Ms varsayıyoruz.
+                    var rawTime = properties.time;
+                    time = new Date(rawTime > 1e12 ? rawTime : rawTime * 1000).toLocaleString(); 
+                    title = properties.flynn_region || properties.magtype;
+                }
+
+                // Büyüklüğe göre stil
+                var radius = magnitude * 3;
+                var color;
+                if (magnitude >= 6.0) {
+                    color = 'red';
+                } else if (magnitude >= 4.0) {
+                    color = 'orange';
+                } else {
+                    color = 'blue';
+                }
+
+                var marker = L.circleMarker([lat, lon], {
+                    radius: radius,
+                    fillColor: color,
+                    color: '#000',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7
+                }).addTo(markers);
+
+                var popupContent = `
+                    <h3>Deprem Bilgisi (${source})</h3>
+                    <p><strong>Yer:</strong> ${title}</p>
+                    <p><strong>Büyüklük:</strong> ${magnitude ? magnitude.toFixed(1) : 'Bilinmiyor'}</p>
+                    <p><strong>Zaman:</strong> ${time}</p>
+                `;
+                
+                marker.bindPopup(popupContent);
+            });
+        }
+
+        // 4. API'lerden Veri Çekme (Dinamik Tarihli)
+
+        // --- USGS API (Son 24 saat, Dinamik Tarih) ---
+        // minmag=2.0 (Büyüklük en az 2.0)
+        const usgsApiUrl = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${startTimeISO}&endtime=${endTimeISO}&minmagnitude=2.0`;
+
+        fetch(usgsApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('USGS ağı hatası');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('USGS Verisi (Son 24 Saat):', data);
+                if (data && data.features) {
+                    processEarthquakeData(data.features, 'USGS');
+                }
+            })
+            .catch(error => console.error('USGS verisi alınamadı:', error));
+
+        // --- EMSC API (Son 24 saat, Dinamik Tarih) ---
+        // limit=100 (Maksimum 100 veri)
+        const emscApiUrl = `https://www.seismicportal.eu/fdsnws/event/1/query?format=geojson&starttime=${startTimeISO}&endtime=${endTimeISO}&limit=100&minmag=2.0`;
+
+        fetch(emscApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('EMSC ağı hatası');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('EMSC Verisi (Son 24 Saat):', data);
+                // EMSC verisi de GeoJSON formatında features içeriyor
+                if (data && data.features) {
+                    processEarthquakeData(data.features, 'EMSC');
+                }
+            })
+            .catch(error => console.error('EMSC verisi alınamadı:', error));
+
+    </script>
+
+</body>
+</html>
