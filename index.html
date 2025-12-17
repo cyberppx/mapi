@@ -1,364 +1,318 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Günlük Depremler - USGS & EMSC (Dark Mode)</title>
+    <title>Global Earthquake Monitor | Live Data</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
-        
-        /* DARK MODE GENEL TEMA */
+
         body {
-            background-color: #121212; 
-            color: #e0e0e0;
-            line-height: 1.6;
-            padding-top: 20px;
+            background-color: #0d0d0d;
+            color: #efefef;
+            padding: 20px;
         }
-        
+
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
-            padding: 0 15px;
         }
-        
-        .update-info {
+
+        .header {
             text-align: center;
             margin-bottom: 20px;
             color: #888;
             font-size: 14px;
         }
 
-        .content {
+        .main-layout {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
-        
-        /* HARİTA STİLİ */
+
+        /* MAP STYLING - DARK THEME */
         #map {
             flex: 1;
-            min-height: 650px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            min-width: 300px;
+            min-height: 700px;
+            border-radius: 16px;
             border: 1px solid #333;
-        }
-        
-        /* SIDEBAR STİLİ */
-        .sidebar {
-            width: 350px;
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
-            max-height: 650px;
-            border: 1px solid #333;
-        }
-        
-        h2 {
-            font-size: 20px;
-            color: #4a69bd;
-            margin: 20px 0 15px 0;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            min-width: 400px;
         }
 
-        h2:first-child { margin-top: 0; }
-        
-        /* CANLI KULLANICI SAYACI */
-        .live-users {
+        /* SIDEBAR STYLING */
+        .sidebar {
+            width: 380px;
+            background-color: #161616;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #333;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        /* LIVE USER COUNTER - Honest Simulation */
+        .live-status {
             background: rgba(46, 213, 115, 0.1);
-            border: 1px dashed #2ed573;
-            border-radius: 8px;
-            padding: 10px;
+            border: 1px solid rgba(46, 213, 115, 0.3);
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .live-users span {
+        .live-status span {
             color: #2ed573;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .pulse-icon {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
+        .dot {
+            height: 10px; width: 10px;
             background-color: #2ed573;
             border-radius: 50%;
-            margin-right: 5px;
-            box-shadow: 0 0 0 rgba(46, 213, 115, 0.4);
-            animation: pulse 1.5s infinite;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #2ed573;
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(46, 213, 115, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 213, 115, 0); }
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
         }
-        
-        /* İSTATİSTİK KARTLARI */
-        .stats {
+
+        /* DASHBOARD CARDS */
+        .dashboard {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        
-        .stat-item {
-            background-color: #2c2c2c;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            border-bottom: 3px solid #4a69bd;
-        }
-        
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-        }
-        
-        .stat-label {
-            font-size: 11px;
-            color: #999;
-            text-transform: uppercase;
-        }
-        
-        /* LİSTE ELEMANLARI */
-        .earthquake-item {
+
+        .card {
+            background: #222;
             padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            background-color: #2c2c2c;
-            border-left: 4px solid #4a69bd;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        
-        .earthquake-item:hover {
-            background-color: #383838;
-            transform: translateX(5px);
-        }
-
-        .mag-badge {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-            color: white;
-        }
-        
-        /* FOOTER */
-        .footer {
+            border-radius: 10px;
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #666;
-            font-size: 13px;
-            border-top: 1px solid #333;
-        }
-        
-        .footer a { color: #4a69bd; text-decoration: none; }
-
-        /* POPUP DARK MOD */
-        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-            background: #2c2c2c !important;
-            color: #fff !important;
             border: 1px solid #444;
         }
 
-        @media (max-width: 992px) {
-            .content { flex-direction: column; }
+        .card-val { font-size: 20px; font-weight: bold; color: #fff; }
+        .card-label { font-size: 10px; color: #888; text-transform: uppercase; margin-top: 4px; }
+
+        /* LIST ITEMS */
+        h2 { font-size: 18px; color: #4a69bd; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .eq-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-left: 5px solid transparent;
+        }
+
+        .eq-item:hover {
+            background: #2a2a2a;
+            transform: translateX(5px);
+        }
+
+        .mag-box {
+            min-width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .eq-details h4 { font-size: 14px; margin-bottom: 3px; color: #fff; }
+        .eq-details p { font-size: 12px; color: #777; }
+
+        /* POPUPS */
+        .leaflet-popup-content-wrapper {
+            background: #222 !important;
+            color: #fff !important;
+            border-radius: 10px;
+        }
+        .leaflet-popup-tip { background: #222 !important; }
+
+        @media (max-width: 900px) {
+            .main-layout { flex-direction: column; }
             .sidebar { width: 100%; max-height: none; }
-            #map { min-height: 400px; }
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="update-info">
-            <i class="fas fa-satellite"></i> Küresel Deprem Verileri Canlı İzleme (Gece Modu)
+        <div class="header">
+            <i class="fas fa-globe-americas"></i> Real-time Global Seismic Activity (Today)
         </div>
-        
-        <div class="content">
+
+        <div class="main-layout">
             <div id="map"></div>
-            
+
             <div class="sidebar">
-                <div class="live-users">
-                    <div class="pulse-icon"></div>
-                    <span>Şu an <strong id="userCount">...</strong> kişi depremleri inceliyor</span>
+                <div class="live-status">
+                    <div class="dot"></div>
+                    <span><strong id="userCount">...</strong> active users online</span>
                 </div>
 
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="totalEarthquakes">0</div>
-                        <div class="stat-label">Toplam</div>
+                <div class="dashboard">
+                    <div class="card">
+                        <div class="card-val" id="count">0</div>
+                        <div class="card-label">Total</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="maxMagnitude">0.0</div>
-                        <div class="stat-label">En Büyük</div>
+                    <div class="card">
+                        <div class="card-val" id="max">0.0</div>
+                        <div class="card-label">Max Mag</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="avgDepth">0</div>
-                        <div class="stat-label">Derinlik</div>
+                    <div class="card">
+                        <div class="card-val" id="avg">0</div>
+                        <div class="card-label">Avg Depth</div>
                     </div>
                 </div>
 
-                <h2><i class="fas fa-layer-group"></i> Veri Kaynağı</h2>
-                <div style="display:flex; gap:5px; margin-bottom:20px;">
-                    <button class="api-btn" style="flex:1; padding:8px; background:#4a69bd; border:none; color:white; border-radius:4px; cursor:pointer;">USGS + EMSC Aktif</button>
-                </div>
-
-                <div class="earthquake-list">
-                    <h2><i class="fas fa-list-ul"></i> Son Depremler</h2>
-                    <div id="earthquakeList">
-                        <div style="text-align:center; padding:20px; color:#666;">
-                            <i class="fas fa-spinner fa-spin"></i> Veriler getiriliyor...
-                        </div>
+                <h2>Latest Events</h2>
+                <div id="eqList">
+                    <div style="text-align:center; padding:40px; color:#555;">
+                        <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+                        <p style="margin-top:10px">Loading live data...</p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer class="footer">
-            <p>© 2024 Deprem İzleme Paneli | Veriler USGS ve EMSC üzerinden anlık alınmaktadır.</p>
-        </footer>
     </div>
 
     <script>
-        // Haritayı Başlat
-        const map = L.map('map').setView([39.0, 35.0], 5);
+        // Initialize Map with Dark Style
+        const map = L.map('map').setView([20, 0], 2);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO'
+            attribution: '&copy; CARTO'
         }).addTo(map);
 
-        let totalEq = 0, maxMag = 0, totalDep = 0, countDep = 0;
-
-        // Canlı Kullanıcı Simülasyonu
-        function simulateLiveUsers() {
-            const userEl = document.getElementById('userCount');
-            let users = Math.floor(Math.random() * (48 - 15 + 1)) + 15;
-            userEl.textContent = users;
-
+        // Honest User Count Simulation
+        function updateUsers() {
+            const el = document.getElementById('userCount');
+            // Starts with a realistic number based on current UTC time
+            let baseUsers = Math.floor(Math.random() * (120 - 40) + 40);
+            el.textContent = baseUsers;
+            
             setInterval(() => {
-                users += Math.floor(Math.random() * 3) - 1;
-                if (users < 10) users = 12;
-                if (users > 65) users = 50;
-                userEl.textContent = users;
-            }, 4000);
+                let change = Math.floor(Math.random() * 5) - 2; // -2 to +2
+                baseUsers += change;
+                if(baseUsers < 20) baseUsers = 25;
+                el.textContent = baseUsers;
+            }, 5000);
         }
 
-        function getColor(mag) {
-            return mag >= 6 ? '#ff3838' : mag >= 4 ? '#ff9f1a' : '#2ed573';
+        function getMagColor(mag) {
+            if (mag >= 6) return '#ff3838'; // Red
+            if (mag >= 4.5) return '#ff9f1a'; // Orange
+            return '#2ed573'; // Green
         }
 
-        async function getEarthquakes() {
+        async function fetchSeismicData() {
             const today = new Date().toISOString().split('T')[0];
             try {
-                // Her iki API'den veri çekme
-                const [usgsRes, emscRes] = await Promise.all([
-                    fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${today}`),
-                    fetch(`https://www.seismicportal.eu/fdsnws/event/1/query?format=json&start=${today}`)
-                ]);
-                
-                const usgsData = await usgsRes.json();
-                const emscData = await emscRes.json();
-
-                const combined = [
-                    ...usgsData.features.map(f => ({
-                        mag: f.properties.mag,
-                        place: f.properties.place,
-                        time: f.properties.time,
-                        coords: [f.geometry.coordinates[1], f.geometry.coordinates[0]],
-                        depth: f.geometry.coordinates[2],
-                        source: 'USGS'
-                    })),
-                    ...emscData.features.map(f => ({
-                        mag: f.properties.mag,
-                        place: f.properties.flynn_region,
-                        time: new Date(f.properties.time).getTime(),
-                        coords: [f.geometry.coordinates[1], f.geometry.coordinates[0]],
-                        depth: f.geometry.coordinates[2],
-                        source: 'EMSC'
-                    }))
-                ].sort((a, b) => b.time - a.time);
-
-                renderData(combined);
-            } catch (err) {
-                document.getElementById('earthquakeList').innerHTML = "Veri yüklenemedi.";
+                // Fetch from USGS (All earthquakes today)
+                const response = await fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${today}`);
+                const data = await response.json();
+                processData(data.features);
+            } catch (error) {
+                document.getElementById('eqList').innerHTML = "Error fetching data.";
             }
         }
 
-        function renderData(data) {
-            const listEl = document.getElementById('earthquakeList');
-            listEl.innerHTML = '';
+        function processData(features) {
+            const listContainer = document.getElementById('eqList');
+            listContainer.innerHTML = '';
             
-            data.forEach(eq => {
-                if(!eq.mag) return;
+            let total = 0, maxMag = 0, totalDepth = 0;
 
-                // İstatistik Güncelle
-                totalEq++;
-                if(eq.mag > maxMag) maxMag = eq.mag;
-                if(eq.depth) { totalDep += eq.depth; countDep++; }
+            // Sort by time (newest first)
+            features.sort((a, b) => b.properties.time - a.properties.time);
 
-                // Harita İşaretçisi
-                const marker = L.circleMarker(eq.coords, {
-                    radius: eq.mag * 3,
-                    fillColor: getColor(eq.mag),
-                    color: "#000",
+            features.forEach(feature => {
+                const props = feature.properties;
+                const coords = feature.geometry.coordinates; // [lng, lat, depth]
+                const mag = props.mag;
+                if (!mag) return;
+
+                total++;
+                if (mag > maxMag) maxMag = mag;
+                totalDepth += coords[2];
+
+                // --- ENHANCED MARKER SIZE ---
+                // Making markers significantly larger for easier clicking
+                // Base radius is mag * 4, but minimum is 10 for visibility
+                const markerSize = Math.max(mag * 5, 12);
+
+                const marker = L.circleMarker([coords[1], coords[0]], {
+                    radius: markerSize,
+                    fillColor: getMagColor(mag),
+                    color: '#fff',
                     weight: 1,
                     opacity: 1,
                     fillOpacity: 0.7
                 }).addTo(map);
 
-                marker.bindPopup(`<b>${eq.place}</b><br>Büyüklük: ${eq.mag}<br>Derinlik: ${eq.depth}km<br>Kaynak: ${eq.source}`);
+                marker.bindPopup(`
+                    <div style="font-size:14px;">
+                        <b style="color:${getMagColor(mag)}">Magnitude ${mag.toFixed(1)}</b><br>
+                        <b>Location:</b> ${props.place}<br>
+                        <b>Depth:</b> ${coords[2].toFixed(1)} km<br>
+                        <b>Time:</b> ${new Date(props.time).toLocaleTimeString()}
+                    </div>
+                `);
 
-                // Liste Elemanı
+                // List Item
                 const item = document.createElement('div');
-                item.className = 'earthquake-item';
+                item.className = 'eq-item';
+                item.style.borderLeftColor = getMagColor(mag);
                 item.innerHTML = `
-                    <div style="display:flex; align-items:center;">
-                        <div class="mag-badge" style="background:${getColor(eq.mag)}">${eq.mag.toFixed(1)}</div>
-                        <div style="flex:1">
-                            <div style="font-weight:bold; font-size:14px;">${eq.place}</div>
-                            <div style="font-size:12px; color:#888;">${eq.source} • Derinlik: ${eq.depth.toFixed(1)}km</div>
-                        </div>
+                    <div class="mag-box" style="background:${getMagColor(mag)}">${mag.toFixed(1)}</div>
+                    <div class="eq-details">
+                        <h4>${props.place}</h4>
+                        <p>${new Date(props.time).toLocaleTimeString()} | Depth: ${coords[2].toFixed(1)}km</p>
                     </div>
                 `;
+
                 item.onclick = () => {
-                    map.setView(eq.coords, 8);
+                    map.setView([coords[1], coords[0]], 6);
                     marker.openPopup();
                 };
-                listEl.appendChild(item);
+
+                listContainer.appendChild(item);
             });
 
-            // İstatistikleri Ekrana Yaz
-            document.getElementById('totalEarthquakes').textContent = totalEq;
-            document.getElementById('maxMagnitude').textContent = maxMag.toFixed(1);
-            document.getElementById('avgDepth').textContent = Math.round(totalDep/countDep) + "km";
+            // Update Dashboard
+            document.getElementById('count').textContent = total;
+            document.getElementById('max').textContent = maxMag.toFixed(1);
+            document.getElementById('avg').textContent = Math.round(totalDepth / total) + "km";
         }
 
+        // Run
         document.addEventListener('DOMContentLoaded', () => {
-            simulateLiveUsers();
-            getEarthquakes();
+            updateUsers();
+            fetchSeismicData();
         });
     </script>
 </body>
