@@ -15,7 +15,7 @@
         .main-layout { display: flex; flex-wrap: wrap; gap: 20px; }
         #map { flex: 1; min-height: 780px; border-radius: 12px; border: 1px solid #333; min-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .sidebar { width: 380px; background-color: #121212; border-radius: 12px; padding: 20px; border: 1px solid #333; max-height: 780px; overflow-y: auto; }
+        .sidebar { width: 380px; background-color: #121212; border-radius: 12px; padding: 20px; border: 1px solid #333; max-height: 780px; overflow-y: auto; display: flex; flex-direction: column; }
 
         /* ANALYTICS */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px; }
@@ -25,12 +25,17 @@
 
         /* LIST */
         h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #5c7cfa; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        #list { flex-grow: 1; }
         .eq-card { display: flex; align-items: center; background: #1a1a1a; padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
         .eq-card:hover { border-color: #5c7cfa; background: #222; transform: translateX(4px); }
         
-        .mag-badge { min-width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 12px; color: white; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .mag-badge { min-width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 12px; color: white; font-size: 15px; }
         .info h4 { font-size: 13px; color: #fff; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
         .info p { font-size: 11px; color: #666; }
+
+        /* FOOTER AREA IN SIDEBAR */
+        .sidebar-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid #222; font-size: 11px; color: #555; line-height: 1.5; }
+        .sidebar-footer b { color: #888; }
 
         /* CUSTOM POPUP */
         .leaflet-popup-content-wrapper { background: #1a1a1a !important; color: white !important; border-radius: 8px; border: 1px solid #333; }
@@ -52,20 +57,26 @@
             </div>
 
             <h2><i class="fas fa-rss"></i> Latest Global Events</h2>
+            
             <div id="list">
                 <div style="text-align:center; padding:50px; color:#444;">
                     <i class="fas fa-spinner fa-spin fa-2x"></i>
                 </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <p><b>Notice:</b> This application only displays earthquakes that occurred today.</p>
+                <br>
+                <p>Developed using <b>OpenStreetMap</b>, <b>USGS Earthquake API</b>, and <b>EMSC Earthquake API</b>.</p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Dark themed map
     const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { 
-        attribution: '&copy; OpenStreetMap contributors' 
+        attribution: '&copy; CARTO' 
     }).addTo(map);
 
     function getMagColor(m) {
@@ -87,7 +98,6 @@
             const usgsData = await usgsRes.json();
             const emscData = await emscRes.json();
 
-            // Merge and Clean Data
             const merged = [
                 ...usgsData.features.map(f => ({
                     mag: f.properties.mag,
@@ -122,7 +132,7 @@
             if (eq.mag > max) max = eq.mag;
             totalD += eq.depth;
 
-            // OPTIMIZED RADIUS: magnitude * 4 (Min size 8 for small ones)
+            // Optimized radius
             const dotSize = Math.max(eq.mag * 4, 8); 
 
             const marker = L.circleMarker(eq.coords, {
@@ -157,7 +167,7 @@
 
         document.getElementById('total').textContent = data.length;
         document.getElementById('maxMag').textContent = max.toFixed(1);
-        document.getElementById('avgDep').textContent = Math.round(totalD / data.length) + "km";
+        document.getElementById('avgDep').textContent = data.length > 0 ? Math.round(totalD / data.length) + "km" : "0km";
     }
 
     updateDashboard();
