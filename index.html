@@ -15,9 +15,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        /* DARK MODE ARKA PLAN */
         body {
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #121212; 
+            color: #e0e0e0;
             line-height: 1.6;
             padding-top: 10px;
         }
@@ -32,9 +33,9 @@
             text-align: center;
             margin-bottom: 15px;
             font-size: 16px;
-            color: #1e3c72;
+            color: #4a69bd;
             font-weight: 600;
-            background-color: rgba(30, 60, 114, 0.1);
+            background-color: rgba(74, 105, 189, 0.15);
             padding: 8px;
             border-radius: 5px;
             display: inline-block;
@@ -51,26 +52,29 @@
             flex: 1;
             min-height: 600px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             min-width: 300px;
+            border: 1px solid #333;
         }
         
+        /* DARK MODE SIDEBAR */
         .sidebar {
             width: 320px;
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             overflow-y: auto;
             max-height: 600px;
+            border: 1px solid #333;
         }
         
         h2 {
             font-size: 22px;
-            color: #1e3c72;
+            color: #4a69bd;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #f0f2f5;
+            border-bottom: 2px solid #333;
         }
         
         .api-selector {
@@ -78,14 +82,15 @@
             margin-bottom: 20px;
             border-radius: 5px;
             overflow: hidden;
-            border: 1px solid #ddd;
+            border: 1px solid #333;
         }
         
         .api-option {
             flex: 1;
             text-align: center;
             padding: 10px;
-            background-color: #f8f9fa;
+            background-color: #2c2c2c;
+            color: #bbb;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
@@ -101,7 +106,7 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #f8f9fa;
+            background-color: #2c2c2c;
             border-radius: 5px;
             border-left: 4px solid #4a69bd;
         }
@@ -113,105 +118,53 @@
         .stat-value {
             font-size: 24px;
             font-weight: bold;
-            color: #1e3c72;
+            color: #4a69bd;
         }
         
         .stat-label {
             font-size: 14px;
-            color: #666;
+            color: #999;
             margin-top: 5px;
         }
         
-        .legend {
-            margin-top: 20px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .earthquake-list {
-            margin-top: 20px;
+        .legend-item span {
+            color: #ccc;
         }
         
         .earthquake-item {
             padding: 12px;
             border-radius: 5px;
             margin-bottom: 10px;
-            background-color: #f8f9fa;
+            background-color: #2c2c2c;
             border-left: 4px solid #4a69bd;
+            color: #eee;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         
         .earthquake-item:hover {
-            background-color: #e9ecef;
+            background-color: #383838;
             transform: translateX(5px);
-        }
-        
-        .earthquake-magnitude {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            background-color: #e55039;
-            color: white;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
-        .earthquake-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
         }
         
         .earthquake-info p {
             font-size: 14px;
-            color: #666;
+            color: #aaa;
         }
         
-        .loading {
+        .loading, .no-data {
             text-align: center;
             padding: 30px;
-            color: #666;
-        }
-        
-        .loading i {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #4a69bd;
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-        }
-        
-        .no-data i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ddd;
+            color: #888;
         }
         
         .footer {
             text-align: center;
             margin-top: 30px;
             padding: 20px;
-            color: #666;
+            color: #888;
             font-size: 14px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #333;
         }
         
         .footer a {
@@ -219,41 +172,30 @@
             text-decoration: none;
         }
         
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .auto-update-info {
+        .update-info {
             text-align: center;
             margin-bottom: 15px;
-            color: #666;
+            color: #888;
             font-size: 14px;
         }
-        
-        .auto-update-info i {
-            color: #4a69bd;
-            margin-right: 5px;
+
+        /* Leaflet Popup Dark Mode Uyarlaması */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background: #2c2c2c !important;
+            color: #fff !important;
         }
         
         @media (max-width: 992px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
-            #map {
-                min-height: 500px;
-            }
+            .content { flex-direction: column; }
+            .sidebar { width: 100%; }
+            #map { min-height: 500px; }
         }
     </style>
 </head>
 <body>
     <main class="container">
-        <div class="auto-update-info">
-            <i class="fas fa-sync-alt"></i> Harita otomatik olarak 3-14 saniye aralıklarla güncelleniyor
+        <div class="update-info">
+            <i class="fas fa-check-circle"></i> Veriler sayfa yüklendiğinde güncellenmiştir. (Dark Mode Aktif)
         </div>
         
         <div class="content">
@@ -319,500 +261,166 @@
         <p>Bu uygulama <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a>, 
         <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank">USGS Deprem API</a> ve 
         <a href="https://www.seismicportal.eu/fdsnws/event/1/" target="_blank">EMSC Deprem API</a> kullanılarak geliştirilmiştir.</p>
-        <p>Veriler sadece bugüne ait depremleri göstermektedir.</p>
     </footer>
 
     <script>
-        // OpenStreetMap haritasını başlat
         const map = L.map('map').setView([39.0, 35.0], 6);
         
-        // OpenStreetMap tile layer ekle
+        // Harita katmanı (Standart katman kullanıldı, isterseniz koyu harita katmanları da eklenebilir)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            attribution: '&copy; OpenStreetMap',
             maxZoom: 18
         }).addTo(map);
         
-        // Bugünün tarihini al ve formatla
         const today = new Date();
         const todayFormatted = formatDateForAPI(today);
         const todayDisplay = formatDateForDisplay(today);
-        
-        // Tarih gösterimini güncelle
         document.getElementById('todayDate').textContent = todayDisplay;
         
-        // Seçili tarih (her zaman bugün)
         let selectedDate = todayFormatted;
-        let selectedDateDisplay = todayDisplay;
-        
-        // Deprem marker'larını saklamak için değişkenler
         let usgsMarkers = [];
         let emscMarkers = [];
-        let activeApi = 'all'; // 'all', 'usgs', 'emsc'
+        let activeApi = 'all'; 
         
-        // İstatistikler
-        let totalEarthquakes = 0;
-        let maxMagnitude = 0;
-        let totalDepth = 0;
-        let earthquakeCount = 0;
-        
-        // Otomatik güncelleme zamanlayıcısı
-        let autoUpdateTimer;
-        
-        // Tarihi API formatına çevir (YYYY-MM-DD)
+        let totalEarthquakes = 0; let maxMagnitude = 0; let totalDepth = 0; let earthquakeCount = 0;
+
         function formatDateForAPI(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            return date.toISOString().split('T')[0];
         }
         
-        // Tarihi görüntüleme formatına çevir (DD.MM.YYYY)
         function formatDateForDisplay(date) {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
+            return date.toLocaleDateString('tr-TR');
         }
         
-        // Tarihi API için ISO formatına çevir (YYYY-MM-DDTHH:MM:SS)
-        function getDateRangeForAPI(dateString) {
-            // Tarih aralığı: seçilen günün 00:00:00 - 23:59:59
-            const startTime = `${dateString}T00:00:00`;
-            const endTime = `${dateString}T23:59:59`;
-            return { startTime, endTime };
-        }
-        
-        // Marker renklerini büyüklüğe göre belirle
         function getColor(magnitude) {
-            if (magnitude < 4) return '#2ed573'; // Yeşil - küçük depremler
-            if (magnitude < 6) return '#ff9f1a'; // Turuncu - orta depremler
-            return '#ff3838'; // Kırmızı - büyük depremler
+            if (magnitude < 4) return '#2ed573';
+            if (magnitude < 6) return '#ff9f1a';
+            return '#ff3838';
         }
         
-        // Marker ikonunu oluştur
         function createIcon(magnitude) {
             const color = getColor(magnitude);
-            const size = 20 + Math.min(magnitude * 5, 30); // Maksimum boyut sınırı
+            const size = 20 + Math.min(magnitude * 5, 30);
             return L.divIcon({
                 className: 'custom-marker',
-                html: `<div style="background-color:${color}; width:${size}px; height:${size}px; border-radius:50%; border:2px solid white; box-shadow:0 0 10px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:${10 + Math.min(magnitude, 6)}px">${magnitude.toFixed(1)}</div>`,
+                html: `<div style="background-color:${color}; width:${size}px; height:${size}px; border-radius:50%; border:2px solid #121212; box-shadow:0 0 10px rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:${10 + Math.min(magnitude, 6)}px">${magnitude.toFixed(1)}</div>`,
                 iconSize: [size + 10, size + 10],
                 iconAnchor: [size/2 + 5, size/2 + 5]
             });
         }
         
-        // Tarihi formatla (okunabilir formata)
         function formatDateTime(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString('tr-TR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
+            return new Date(dateString).toLocaleString('tr-TR');
         }
         
-        // USGS verilerini çek (günlük)
         async function fetchUSGSData(dateString) {
             try {
-                const { startTime, endTime } = getDateRangeForAPI(dateString);
-                
-                // Seçilen gündeki tüm depremleri al (minimum büyüklük filtrelemesi yok)
-                const response = await fetch(
-                    `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${startTime}&endtime=${endTime}`
-                );
+                const response = await fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${dateString}T00:00:00&endtime=${dateString}T23:59:59`);
                 const data = await response.json();
                 return data.features || [];
-            } catch (error) {
-                console.error('USGS verisi alınırken hata oluştu:', error);
-                return [];
-            }
+            } catch (e) { return []; }
         }
         
-        // EMSC verilerini çek (günlük)
         async function fetchEMSCData(dateString) {
             try {
-                const { startTime, endTime } = getDateRangeForAPI(dateString);
-                
-                // Seçilen gündeki tüm depremleri al
-                const response = await fetch(
-                    `https://www.seismicportal.eu/fdsnws/event/1/query?format=json&start=${startTime}&end=${endTime}`
-                );
+                const response = await fetch(`https://www.seismicportal.eu/fdsnws/event/1/query?format=json&start=${dateString}T00:00:00&end=${dateString}T23:59:59`);
                 const data = await response.json();
                 return data.features || [];
-            } catch (error) {
-                console.error('EMSC verisi alınırken hata oluştu:', error);
-                return [];
-            }
+            } catch (e) { return []; }
         }
         
-        // İstatistikleri güncelle
         function updateStats(magnitude, depth) {
             totalEarthquakes++;
-            
-            if (magnitude > maxMagnitude) {
-                maxMagnitude = magnitude;
-            }
-            
-            if (depth) {
-                totalDepth += depth;
-                earthquakeCount++;
-            }
-            
+            if (magnitude > maxMagnitude) maxMagnitude = magnitude;
+            if (depth) { totalDepth += depth; earthquakeCount++; }
             document.getElementById('totalEarthquakes').textContent = totalEarthquakes;
             document.getElementById('maxMagnitude').textContent = maxMagnitude.toFixed(1);
-            
-            if (earthquakeCount > 0) {
-                const avgDepth = Math.round(totalDepth / earthquakeCount);
-                document.getElementById('avgDepth').textContent = `${avgDepth} km`;
-            }
+            if (earthquakeCount > 0) document.getElementById('avgDepth').textContent = `${Math.round(totalDepth / earthquakeCount)} km`;
         }
         
-        // İstatistikleri sıfırla
         function resetStats() {
-            totalEarthquakes = 0;
-            maxMagnitude = 0;
-            totalDepth = 0;
-            earthquakeCount = 0;
-            
+            totalEarthquakes = 0; maxMagnitude = 0; totalDepth = 0; earthquakeCount = 0;
             document.getElementById('totalEarthquakes').textContent = '0';
             document.getElementById('maxMagnitude').textContent = '0.0';
             document.getElementById('avgDepth').textContent = '0 km';
         }
         
-        // USGS verilerini haritaya ekle
         async function addUSGSMarkers(dateString) {
-            // Eski marker'ları temizle
-            usgsMarkers.forEach(marker => map.removeLayer(marker));
-            usgsMarkers = [];
-            
-            const earthquakes = await fetchUSGSData(dateString);
-            
-            if (earthquakes.length === 0) {
-                return [];
-            }
-            
-            const usgsData = [];
-            
-            earthquakes.forEach(earthquake => {
-                const { geometry, properties } = earthquake;
-                const [lng, lat, depth] = geometry.coordinates;
-                const { mag, place, time, title } = properties;
-                
-                // Eğer büyüklük değeri yoksa atla
-                if (mag === null || mag === undefined) return;
-                
-                // Marker oluştur
-                const marker = L.marker([lat, lng], { icon: createIcon(mag) })
-                    .addTo(map)
-                    .bindPopup(`
-                        <div style="min-width: 200px;">
-                            <h3 style="margin:0 0 10px 0; color:#e55039;">${title}</h3>
-                            <p><strong>Büyüklük:</strong> ${mag.toFixed(1)}</p>
-                            <p><strong>Yer:</strong> ${place}</p>
-                            <p><strong>Derinlik:</strong> ${depth.toFixed(1)} km</p>
-                            <p><strong>Zaman:</strong> ${formatDateTime(time)}</p>
-                            <p><strong>Kaynak:</strong> USGS</p>
-                        </div>
-                    `);
-                
+            usgsMarkers.forEach(m => map.removeLayer(m)); usgsMarkers = [];
+            const data = await fetchUSGSData(dateString);
+            const processed = [];
+            data.forEach(q => {
+                const [lng, lat, depth] = q.geometry.coordinates;
+                const m = q.properties.mag;
+                if (m === null) return;
+                const marker = L.marker([lat, lng], { icon: createIcon(m) }).addTo(map)
+                    .bindPopup(`<div style="color:white"><h3>${q.properties.title}</h3><p>M: ${m.toFixed(1)} | Derinlik: ${depth.toFixed(1)} km</p></div>`);
                 usgsMarkers.push(marker);
-                usgsData.push({
-                    lat, lng, mag, place, time, depth, title,
-                    source: 'USGS',
-                    marker: marker
-                });
-                
-                // İstatistikleri güncelle
-                updateStats(mag, depth);
+                processed.push({ lat, lng, mag: m, place: q.properties.place, time: q.properties.time, depth, source: 'USGS' });
+                updateStats(m, depth);
             });
-            
-            return usgsData;
+            return processed;
         }
         
-        // EMSC verilerini haritaya ekle
         async function addEMSCMarkers(dateString) {
-            // Eski marker'ları temizle
-            emscMarkers.forEach(marker => map.removeLayer(marker));
-            emscMarkers = [];
-            
-            const earthquakes = await fetchEMSCData(dateString);
-            
-            if (earthquakes.length === 0) {
-                return [];
-            }
-            
-            const emscData = [];
-            
-            earthquakes.forEach(earthquake => {
-                const { geometry, properties } = earthquake;
-                const [lng, lat, depth] = geometry.coordinates;
-                const { mag, flynn_region, time, title } = properties;
-                
-                // Eğer büyüklük değeri yoksa atla
-                if (mag === null || mag === undefined) return;
-                
-                const region = flynn_region || 'Bilinmeyen Bölge';
-                const quakeTitle = title || `M ${mag.toFixed(1)} - ${region}`;
-                
-                // Marker oluştur
-                const marker = L.marker([lat, lng], { icon: createIcon(mag) })
-                    .addTo(map)
-                    .bindPopup(`
-                        <div style="min-width: 200px;">
-                            <h3 style="margin:0 0 10px 0; color:#e55039;">${quakeTitle}</h3>
-                            <p><strong>Büyüklük:</strong> ${mag.toFixed(1)}</p>
-                            <p><strong>Yer:</strong> ${region}</p>
-                            <p><strong>Derinlik:</strong> ${depth.toFixed(1)} km</p>
-                            <p><strong>Zaman:</strong> ${formatDateTime(time)}</p>
-                            <p><strong>Kaynak:</strong> EMSC</p>
-                        </div>
-                    `);
-                
+            emscMarkers.forEach(m => map.removeLayer(m)); emscMarkers = [];
+            const data = await fetchEMSCData(dateString);
+            const processed = [];
+            data.forEach(q => {
+                const [lng, lat, depth] = q.geometry.coordinates;
+                const m = q.properties.mag;
+                if (m === null) return;
+                const marker = L.marker([lat, lng], { icon: createIcon(m) }).addTo(map)
+                    .bindPopup(`<div style="color:white"><h3>${q.properties.flynn_region}</h3><p>M: ${m.toFixed(1)} | Derinlik: ${depth.toFixed(1)} km</p></div>`);
                 emscMarkers.push(marker);
-                emscData.push({
-                    lat, lng, mag, place: region, time, depth, title: quakeTitle,
-                    source: 'EMSC',
-                    marker: marker
-                });
-                
-                // İstatistikleri güncelle
-                updateStats(mag, depth);
+                processed.push({ lat, lng, mag: m, place: q.properties.flynn_region, time: q.properties.time, depth, source: 'EMSC' });
+                updateStats(m, depth);
             });
-            
-            return emscData;
+            return processed;
         }
-        
-        // Liste öğelerine tıklama olaylarını ekle
-        function attachListEvents() {
-            document.querySelectorAll('.earthquake-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const lat = parseFloat(this.getAttribute('data-lat'));
-                    const lng = parseFloat(this.getAttribute('data-lng'));
-                    
-                    map.setView([lat, lng], 8);
-                    
-                    // İlgili marker'ı bul ve popup'ı aç
-                    const allMarkers = [...usgsMarkers, ...emscMarkers];
-                    const marker = allMarkers.find(m => {
-                        const markerLat = m.getLatLng().lat;
-                        const markerLng = m.getLatLng().lng;
-                        return Math.abs(markerLat - lat) < 0.01 && Math.abs(markerLng - lng) < 0.01;
-                    });
-                    
-                    if (marker) {
-                        marker.openPopup();
-                    }
-                });
-            });
-        }
-        
-        // Tüm marker'ları güncelle
+
         async function updateMarkers() {
-            // Bugünün tarihini güncelle
-            const today = new Date();
-            selectedDate = formatDateForAPI(today);
-            selectedDateDisplay = formatDateForDisplay(today);
-            
-            // Tarih gösterimini güncelle
-            document.getElementById('todayDate').textContent = selectedDateDisplay;
-            
-            const earthquakeList = document.getElementById('earthquakeList');
-            earthquakeList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Günlük deprem verileri yükleniyor...</p></div>';
-            
-            // İstatistikleri sıfırla
             resetStats();
+            document.getElementById('earthquakeList').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>';
+            const usgs = await addUSGSMarkers(selectedDate);
+            const emsc = await addEMSCMarkers(selectedDate);
+            const all = [...usgs, ...emsc].sort((a, b) => b.mag - a.mag);
             
-            // Aktif API'ye göre marker'ları yükle
-            let usgsData = [];
-            let emscData = [];
-            
-            if (activeApi === 'usgs' || activeApi === 'all') {
-                usgsData = await addUSGSMarkers(selectedDate);
-            }
-            
-            if (activeApi === 'emsc' || activeApi === 'all') {
-                emscData = await addEMSCMarkers(selectedDate);
-            }
-            
-            // Marker'ları görünürlüğe göre ayarla
-            updateMarkerVisibility();
-            
-            // Tüm verileri birleştir
-            const allData = [...usgsData, ...emscData];
-            
-            // Liste içeriğini güncelle
-            if (allData.length === 0) {
-                earthquakeList.innerHTML = `
-                    <div class="no-data">
-                        <i class="fas fa-earth-europe"></i>
-                        <h3>Deprem Verisi Yok</h3>
-                        <p>${selectedDateDisplay} tarihi için deprem verisi bulunamadı.</p>
-                    </div>
-                `;
+            if (all.length === 0) {
+                document.getElementById('earthquakeList').innerHTML = '<div class="no-data">Veri yok</div>';
             } else {
-                // Verileri büyüklüğe göre sırala (büyükten küçüğe)
-                allData.sort((a, b) => b.mag - a.mag);
-                
-                let listHTML = '';
-                
-                allData.forEach(quake => {
-                    listHTML += `
-                        <div class="earthquake-item" data-lat="${quake.lat}" data-lng="${quake.lng}">
-                            <div style="display:flex; align-items:center;">
-                                <div class="earthquake-magnitude" style="background-color:${getColor(quake.mag)}">${quake.mag.toFixed(1)}</div>
-                                <div class="earthquake-info">
-                                    <h4>${quake.place}</h4>
-                                    <p><i class="far fa-clock"></i> ${formatDateTime(quake.time)}</p>
-                                    <p><i class="fas fa-database"></i> ${quake.source} | <i class="fas fa-ruler-vertical"></i> ${quake.depth ? quake.depth.toFixed(1) + ' km' : 'Bilinmiyor'}</p>
-                                </div>
+                document.getElementById('earthquakeList').innerHTML = all.map(q => `
+                    <div class="earthquake-item" data-lat="${q.lat}" data-lng="${q.lng}">
+                        <div style="display:flex;align-items:center;">
+                            <div class="earthquake-magnitude" style="background-color:${getColor(q.mag)}">${q.mag.toFixed(1)}</div>
+                            <div class="earthquake-info">
+                                <h4>${q.place}</h4>
+                                <p>${q.source} | ${q.depth ? q.depth.toFixed(1) + ' km' : '?'}</p>
                             </div>
                         </div>
-                    `;
+                    </div>`).join('');
+                
+                document.querySelectorAll('.earthquake-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const lat = this.dataset.lat; const lng = this.dataset.lng;
+                        map.setView([lat, lng], 8);
+                    });
                 });
-                
-                earthquakeList.innerHTML = listHTML;
-                attachListEvents();
             }
-            
-            // Başlık güncelle
-            document.querySelector('.earthquake-list h2').innerHTML = `<i class="fas fa-list"></i> ${selectedDateDisplay} Depremleri (${allData.length})`;
-            
-            console.log(`Harita güncellendi: ${new Date().toLocaleTimeString()}`);
+            document.querySelector('.earthquake-list h2').innerHTML = `<i class="fas fa-list"></i> Depremler (${all.length})`;
         }
+
+        document.addEventListener('DOMContentLoaded', updateMarkers);
         
-        // Marker görünürlüğünü güncelle
-        function updateMarkerVisibility() {
-            usgsMarkers.forEach(marker => {
-                if (activeApi === 'usgs' || activeApi === 'all') {
-                    if (!map.hasLayer(marker)) map.addLayer(marker);
-                } else {
-                    if (map.hasLayer(marker)) map.removeLayer(marker);
-                }
-            });
-            
-            emscMarkers.forEach(marker => {
-                if (activeApi === 'emsc' || activeApi === 'all') {
-                    if (!map.hasLayer(marker)) map.addLayer(marker);
-                } else {
-                    if (map.hasLayer(marker)) map.removeLayer(marker);
-                }
-            });
-        }
-        
-        // Rastgele süre oluştur (3-14 saniye arası)
-        function getRandomInterval() {
-            return Math.floor(Math.random() * (14000 - 3000 + 1)) + 3000;
-        }
-        
-        // Otomatik güncellemeyi başlat
-        function startAutoUpdate() {
-            // Önce temizle
-            if (autoUpdateTimer) {
-                clearTimeout(autoUpdateTimer);
-            }
-            
-            // İlk güncelleme
-            updateMarkers();
-            
-            // Sonraki güncellemeyi planla
-            function scheduleNextUpdate() {
-                const interval = getRandomInterval();
-                console.log(`Sonraki güncelleme ${interval/1000} saniye sonra`);
-                
-                autoUpdateTimer = setTimeout(() => {
-                    updateMarkers();
-                    scheduleNextUpdate();
-                }, interval);
-            }
-            
-            scheduleNextUpdate();
-        }
-        
-        // API seçici işlevselliği
         document.querySelectorAll('.api-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.api-option').forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
-                activeApi = this.getAttribute('data-api');
-                updateMarkerVisibility();
-                
-                // Liste içeriğini yeniden oluştur
-                updateListFromMarkers();
+                activeApi = this.dataset.api;
+                usgsMarkers.forEach(m => (activeApi==='all' || activeApi==='usgs') ? map.addLayer(m) : map.removeLayer(m));
+                emscMarkers.forEach(m => (activeApi==='all' || activeApi==='emsc') ? map.addLayer(m) : map.removeLayer(m));
             });
         });
-        
-        // Mevcut marker'lardan liste oluştur
-        function updateListFromMarkers() {
-            const allMarkers = [...usgsMarkers, ...emscMarkers];
-            const filteredMarkers = allMarkers.filter(marker => {
-                if (activeApi === 'all') return true;
-                if (activeApi === 'usgs') return usgsMarkers.includes(marker);
-                if (activeApi === 'emsc') return emscMarkers.includes(marker);
-                return false;
-            });
-            
-            if (filteredMarkers.length === 0) {
-                document.getElementById('earthquakeList').innerHTML = `
-                    <div class="no-data">
-                        <i class="fas fa-earth-europe"></i>
-                        <h3>Deprem Verisi Yok</h3>
-                        <p>${selectedDateDisplay} tarihi için deprem verisi bulunamadı.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Marker verilerini topla ve sırala
-            const markerData = filteredMarkers.map(marker => {
-                const popupContent = marker.getPopup().getContent();
-                // Basit parsing (gerçek uygulamada daha karmaşık olabilir)
-                const magMatch = popupContent.match(/Büyüklük:<\/strong> ([\d.]+)/);
-                const placeMatch = popupContent.match(/Yer:<\/strong> ([^<]+)/);
-                const timeMatch = popupContent.match(/Zaman:<\/strong> ([^<]+)/);
-                const depthMatch = popupContent.match(/Derinlik:<\/strong> ([\d.]+)/);
-                const sourceMatch = popupContent.match(/Kaynak:<\/strong> ([^<]+)/);
-                
-                return {
-                    lat: marker.getLatLng().lat,
-                    lng: marker.getLatLng().lng,
-                    mag: magMatch ? parseFloat(magMatch[1]) : 0,
-                    place: placeMatch ? placeMatch[1].trim() : 'Bilinmeyen',
-                    time: timeMatch ? timeMatch[1].trim() : '',
-                    depth: depthMatch ? parseFloat(depthMatch[1]) : 0,
-                    source: sourceMatch ? sourceMatch[1].trim() : 'Bilinmeyen'
-                };
-            });
-            
-            // Büyüklüğe göre sırala
-            markerData.sort((a, b) => b.mag - a.mag);
-            
-            // Listeyi oluştur
-            let listHTML = '';
-            markerData.forEach(quake => {
-                listHTML += `
-                    <div class="earthquake-item" data-lat="${quake.lat}" data-lng="${quake.lng}">
-                        <div style="display:flex; align-items:center;">
-                            <div class="earthquake-magnitude" style="background-color:${getColor(quake.mag)}">${quake.mag.toFixed(1)}</div>
-                            <div class="earthquake-info">
-                                <h4>${quake.place}</h4>
-                                <p><i class="far fa-clock"></i> ${quake.time}</p>
-                                <p><i class="fas fa-database"></i> ${quake.source} | <i class="fas fa-ruler-vertical"></i> ${quake.depth ? quake.depth.toFixed(1) + ' km' : 'Bilinmiyor'}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('earthquakeList').innerHTML = listHTML;
-            document.querySelector('.earthquake-list h2').innerHTML = `<i class="fas fa-list"></i> ${selectedDateDisplay} Depremleri (${markerData.length})`;
-            attachListEvents();
-        }
-        
-        // Sayfa yüklendiğinde verileri çek ve otomatik güncellemeyi başlat
-        document.addEventListener('DOMContentLoaded', startAutoUpdate);
     </script>
 </body>
 </html>
